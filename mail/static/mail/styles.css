@@ -17,9 +17,10 @@ textarea {
     cursor: pointer;
 }
 
-.email_element .sender{
+.sender{
     font-weight: bold;
     float: left;
+    margin-right: 20px;
 }
 
 .email_element .timestamp{

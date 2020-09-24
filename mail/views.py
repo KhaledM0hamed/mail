@@ -105,6 +105,7 @@ def email(request, email_id):
     try:
         email = Email.objects.get(user=request.user, pk=email_id)
     except Email.DoesNotExist:
+        print("Email not found.")
         return JsonResponse({"error": "Email not found."}, status=404)
 
     # Return email contents
@@ -119,6 +120,7 @@ def email(request, email_id):
         if data.get("archived") is not None:
             email.archived = data["archived"]
         email.save()
+        print('easy')
         return HttpResponse(status=204)
 
     # Email must be via GET or PUT
