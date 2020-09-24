@@ -94,10 +94,10 @@ function load_mail(id){
       })
     })
     let email_shit = email;
-    console.log(email_shit['id'])
+    console.log(email['archived']);
     
     // the following section can became better but ....
-    if (email['archived' == false]){
+    if (email['archived'] == false){
       document.querySelector('#archive-btn').addEventListener('click', () => {
         fetch('/emails/' + email_shit['id'], {
           method: 'PUT',
@@ -121,6 +121,19 @@ function load_mail(id){
         load_mailbox('inbox')
       });
     }
+
+    document.querySelector('#replay-btn').addEventListener('click', () => {
+      let body = `On ${email['timestamp']}  ${email['sender']} wrote: ${email['body']} `
+      let subject
+      if (email['subject'].startsWith === 'Re:')
+        subject = email['subject'];
+      else{
+        subject = `Re: ${email['subject']}` 
+      }
+
+
+      replay_email(email['sender'], subject, body)
+    });
 
 
   });
@@ -149,3 +162,15 @@ function sent_mail() {
   return false;
 }
 
+function replay_email(recipient, subject, body) {
+
+  // Show compose view and hide other views
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#load-mail').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'block';
+
+  // Clear out composition fields
+  document.querySelector('#compose-recipients').value = recipient;
+  document.querySelector('#compose-subject').value = subject;
+  document.querySelector('#compose-body').value = body;
+}
