@@ -1,3 +1,27 @@
 textarea {
     min-height: 400px;
 }
+
+.email_element {
+    display: block;
+    border: 5px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    color: black;
+}
+
+.email_element:hover {
+    border: 5px solid blue;
+    color: black;
+    cursor: pointer;
+}
+
+.email_element .sender{
+    font-weight: bold;
+    float: left;
+}
+
+.email_element .timestamp{
+    float: right;
+}

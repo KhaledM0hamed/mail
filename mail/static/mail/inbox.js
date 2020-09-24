@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
   document.querySelector('#compose').addEventListener('click', compose_email);
   document.querySelector('#compose-form').addEventListener('submit', () => sent_mail());
+
   // By default, load the inbox
   load_mailbox('inbox');
 });
@@ -14,6 +15,7 @@ function compose_email() {
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#load-mail').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
 
   // Clear out composition fields
@@ -27,6 +29,7 @@ function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#load-mail').style.display = 'none';
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
@@ -34,8 +37,21 @@ function load_mailbox(mailbox) {
   fetch('/emails/' + `${mailbox}`)
   .then(response => response.json())
   .then(emails => {
-    console.log(emails);
-  });
+    emails.forEach(email => {
+      const email_element = document.createElement('div');
+      email_element.className = 'email_element';
+      email_element.innerHTML = '<span class= "sender">' + `${email['sender']}` + '</span>';
+      email_element.innerHTML += '<span> | ' + `${email['subject']}` + '</span>';
+      email_element.innerHTML += '<span class= "timestamp">' + `${email['timestamp']}` + '</span>';
+      
+      email_element.addEventListener('click', e => {
+        load_mail(email['id']);
+      });
+
+      document.querySelector('#emails-view').append(email_element);
+    });
+  });  
+
 }
 
 function sent_mail() {
@@ -58,4 +74,9 @@ function sent_mail() {
   });
 
   return false;
+}
+
+
+function load_mail(id){
+  console.log(id);
 }
